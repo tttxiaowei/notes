@@ -103,11 +103,11 @@
                         noteTitle: value,
                         noteId: 'newNote' + ops.newNodeIndex++,
                     };
-                    let parent = this.findNode(ops.treeObj, null, parentNodeId).obj[ops.treeKey.children];
+                    let parent = this.findNode(ops.treeObj, null, parentNodeId).obj;
                     let html = '';
                     if (isMenu) {
                         html = `<div data="${ops.nodePrefix}${newNode[ops.treeKey.id]}"  style="margin-left:10px"><div class="${ops.showClass}">${ops.folderIcon} ${newNode[ops.treeKey.name]}</div></div>`;
-                        parent.push(newNode);
+                        parent.children.push(newNode);
                     } else {
                         html = `<div data="fileData${newNode.noteId}" style="margin-left: 10px" class="${ops.fileClass}">${ops.fileIcon} ${newNode.noteTitle}</div>`;
                         if (parent.noteList) {

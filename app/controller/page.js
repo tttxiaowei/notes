@@ -54,7 +54,7 @@ function createNodeHtml(tree) {   //创建树的html
         if (v.noteList && v.noteList.length) {
             let html2 = '';
             v.noteList.forEach(v => {
-                html2 += `<a style="margin-left: 10px" class="file-item" href="/notes/xiaowei/${v.noteId}"><i class="iconfont icon-10file"></i> ${v.noteTitle}</a>`;
+                html2 += `<a style="margin-left: 10px" class="file-item" href="/blog/xiaowei/${v.noteId}"><i class="iconfont icon-10file"></i> ${v.noteTitle}</a>`;
             });
             html += html2;
         }

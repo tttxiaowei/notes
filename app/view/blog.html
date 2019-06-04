@@ -1,0 +1,28 @@
+{% extends "template.html" %}
+
+{% block titleBlock %}
+<title>{{note.noteTitle}}</title>
+{% endblock %}
+
+{% block cssBlock %}
+<link rel="stylesheet" href="/public/css/blog.css">
+{% endblock %}
+
+{% block bodyBlock %}
+<header class="page-header">
+    大帅伟的Blog
+</header>
+<aside class="page-aside">
+    <div id="menuList">{{menu | safe}}</div>
+</aside>
+<main class="page-main">
+    <article class="page-article">
+        <h2 id="blogTitle" class="center">{{note.noteTitle}}</h2>
+        <div id="blogContent">{{note.html | safe}}</div>
+    </article>
+</main>
+{% endblock %}
+
+{% block jsBlock %}
+<script src="/public/js/blog.js"></script>
+{% endblock %}

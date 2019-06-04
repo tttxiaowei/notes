@@ -1,0 +1,19 @@
+{% extends "template.html" %}
+
+{% block cssBlock %}
+<link rel="stylesheet" href="/public/css/login.css">
+{% endblock %}
+
+{% block bodyBlock %}
+<div class="full">
+    <div class="login-container auto-center">
+        <input type="text" class="form-control marginT10" id="usernameInput" placeholder="User Name">
+        <input type="password" class="form-control marginT10" id="passwordInput" placeholder="Password">
+        <button type="submit" class="btn btn-primary marginT10 float-right" id="loginBtn">Submit</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block jsBlock %}
+<script src="/public/js/login.js"></script>
+{% endblock %}

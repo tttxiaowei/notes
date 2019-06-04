@@ -1,0 +1,42 @@
+{% extends "template.html" %}
+
+{% block cssBlock %}
+<link rel="stylesheet" href="/public/js/editormd/css/editormd.min.css"/>
+<link rel="stylesheet" href="/public/css/manage.css">
+{% endblock %}
+
+{% block bodyBlock %}
+<header class="page-header">
+    大帅伟的Blog
+    <button class="btn btn-secondary float-right" id="submitBtn">保存</button>
+    <button class="btn btn-secondary float-right marginR10" id="fullscreenBtn">全屏编辑</button>
+</header>
+<aside class="page-aside">
+    <div class="marginB10">
+        <button type="button" id="saveMenuBtn" class="btn btn-secondary float-right marginR10">save</button>
+        <button type="button" id="removeMenuBtn" class="btn btn-secondary float-right marginR10">&nbsp;-&nbsp;</button>
+        <button type="button" id="addMenuBtn" class="btn btn-secondary float-right marginR10"><i
+                class="iconfont icon-folder"></i>+
+        </button>
+        <button type="button" id="addFileBtn" class="btn btn-secondary float-right marginR10"><i
+                class="iconfont icon-10file"></i>+
+        </button>
+        <div class="clear"></div>
+    </div>
+    <div id="menuList"></div>
+</aside>
+<main class="page-main">
+    <article class="page-article">
+        <div class="div-title">
+            <input type="text" class="form-control " id="noteTitle" placeholder="标题">
+        </div>
+        <div id="noteEditormd"></div>
+    </article>
+</main>
+{% endblock %}
+
+{% block jsBlock %}
+<script src="/public/js/editormd/editormd.min.js"></script>
+<script src="/public/js/jquery.tree.js"></script>
+<script src="/public/js/manage.js"></script>
+{% endblock %}

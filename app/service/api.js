@@ -113,18 +113,18 @@ class ApiService extends Service {
                 if (+arr[i].menuId) {   // 老的数字id，调update
                     let menu = await self.app.mysql.update('menu', data, {where: {menuId: arr[i].menuId}});
                     if (arr[i].children.length) {
-                        updateMenuTree(arr[i].children, {menuId: arr[i].menuId});   // 把当前menuId传给children当父id
+                        await updateMenuTree(arr[i].children, {menuId: arr[i].menuId});   // 把当前menuId传给children当父id
                     }
                 } else {    // 新menu，调insert
                     let menu = await self.app.mysql.insert('menu', data);
                     if (arr[i].children.length) {
-                        updateMenuTree(arr[i].children, menu);   // 插入成功menu中会有insertId，做为children当父id
+                        await updateMenuTree(arr[i].children, menu);   // 插入成功menu中会有insertId，做为children当父id
                     }
                 }
             }
         }
 
-        updateMenuTree(data.menuTree.children, data.menuTree);
+        await updateMenuTree(data.menuTree.children, data.menuTree);
         let len = data.removeList.length;
         while (len) {
             await this.app.mysql.delete('menu', {userId: userInfo.userId, menuId: data.removeList[--len].menuId});

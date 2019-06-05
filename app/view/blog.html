@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block cssBlock %}
+<link rel="stylesheet" href="/public/js/editormd/css/editormd.min.css"/>
 <link rel="stylesheet" href="/public/css/blog.css">
 {% endblock %}
 
@@ -16,10 +17,10 @@
     <aside class="page-aside">
         <div id="menuList">{{menu | safe}}</div>
     </aside>
-    <main class="page-main">
+    <main class="page-main editormd-preview-theme-dark">
         <article class="page-article">
-            <h2 id="blogTitle" class="center">{{note.noteTitle}}</h2>
-            <div id="blogContent">{{note.html | safe}}</div>
+            <h1 id="blogTitle" class="center">{{note.noteTitle}}</h1>
+            <div id="blogContent" class="markdown-body editormd-preview-container">{{note.html | safe}}</div>
         </article>
     </main>
 </div>

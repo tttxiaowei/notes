@@ -1,0 +1,8 @@
+.page-article {
+    overflow: auto;
+    padding: 40px 20px 0;
+}
+
+.page-aside {
+    border-right: 1px solid #34302F;
+}

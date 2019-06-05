@@ -15,7 +15,7 @@ $(function () {
             let menuId = +file.parent().attr('data').slice(4);
             let title = $('#noteTitle').val();
             let md = this.editorIns.getMarkdown();
-            let html = this.editorIns.getHTML();
+            let html = this.editorIns.getPreviewedHTML();
             if (!title || !md || !menuId) {
                 return $.message('warning', '标题或笔记不能为空!');
             }

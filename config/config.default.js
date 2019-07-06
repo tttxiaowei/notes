@@ -17,8 +17,9 @@ module.exports = appInfo => {
 
     // add your middleware config here
     config.middleware = [
-        'oauth',
         'formatResponse',
+        'formatRequest',
+        'oauth',
     ];
 
     // add your user config here
@@ -31,15 +32,6 @@ module.exports = appInfo => {
             mapping: {
                 '.html': 'nunjucks'
             }
-        },
-        mysql: {
-            // 单数据库信息配置
-            client: {
-            },
-            // 是否加载到 app 上，默认开启
-            app: true,
-            // 是否加载到 agent 上，默认关闭
-            agent: false,
         },
         bodyParser: {
             jsonLimit: '1mb'

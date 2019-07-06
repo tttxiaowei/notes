@@ -6,7 +6,10 @@ class ApiService extends Service {
     async login() {     // 登陆请求
         const {ctx} = this;
         let data = ctx.request.body;
-        let user = await this.app.mysql.get('user', {username: data.username, password: md5(data.password)});   // 对密码进行md5加密，与数据库中md5加密过的密码比较
+        let user = await this.app.mysql.get('user', {   // 对密码进行md5加密，与数据库中md5加密过的密码比较
+            username: data.username,
+            password: md5(data.password)
+        });
         if (user) {
             let token = jwt.sign({
                 userId: user.userId,
@@ -47,7 +50,6 @@ class ApiService extends Service {
 
     async saveNote() {
         const {ctx} = this;
-        let userInfo = jwt.verify(ctx.request.headers.token);
         let data = ctx.request.body;
         let user;
         let params = {
@@ -55,7 +57,7 @@ class ApiService extends Service {
             md: data.md,
             html: data.html,
             menuId: data.menuId,
-            userId: userInfo.userId,
+            userId: ctx.userInfo.userId,
             updateTime: Date.now()
         };
         if (data.noteId) {
@@ -74,20 +76,25 @@ class ApiService extends Service {
 
     async getNote() {
         const {ctx} = this;
-        let userInfo = jwt.verify(ctx.request.headers.token);
-        return await this.app.mysql.get('note', {userId: userInfo.userId, noteId: ctx.params.noteId});
+        return await this.app.mysql.get('note', {
+            userId: ctx.userInfo.userId,
+            noteId: ctx.params.noteId
+        });
     }
 
     async getMenu() {
         const {ctx} = this;
-        let userInfo = jwt.verify(ctx.request.headers.token);
-        let list = await this.app.mysql.select('menu', {where: {userId: userInfo.userId}});
+        let list = await this.app.mysql.select('menu', {
+            where: {
+                userId: ctx.userInfo.userId
+            }
+        });
         let len = list.length;
         while (len) {
             let index = --len;
             list[index].noteList = await this.app.mysql.select('note', {
                 where: {
-                    userId: userInfo.userId,
+                    userId: ctx.userInfo.userId,
                     menuId: list[index].menuId
                 },
                 columns: ['noteId', 'noteTitle'],
@@ -99,7 +106,6 @@ class ApiService extends Service {
     async saveMenu() {
         const {ctx} = this;
         let data = ctx.request.body;
-        let userInfo = jwt.verify(ctx.request.headers.token);
         let self = this;
 
         async function updateMenuTree(arr, parent) {
@@ -108,10 +114,14 @@ class ApiService extends Service {
                 let data = {
                     menuName: arr[i].menuName,
                     parentId: parent.menuId == null ? parent.insertId : parent.menuId,
-                    userId: userInfo.userId,
+                    userId: ctx.userInfo.userId,
                 };
                 if (+arr[i].menuId) {   // 老的数字id，调update
-                    let menu = await self.app.mysql.update('menu', data, {where: {menuId: arr[i].menuId}});
+                    await self.app.mysql.update('menu', data, {
+                        where: {
+                            menuId: arr[i].menuId
+                        }
+                    });
                     if (arr[i].children.length) {
                         await updateMenuTree(arr[i].children, {menuId: arr[i].menuId});   // 把当前menuId传给children当父id
                     }
@@ -127,13 +137,23 @@ class ApiService extends Service {
         await updateMenuTree(data.menuTree.children, data.menuTree);
         let len = data.removeList.length;
         while (len) {
-            await this.app.mysql.delete('menu', {userId: userInfo.userId, menuId: data.removeList[--len].menuId});
+            await this.app.mysql.delete('menu', {
+                userId: userInfo.userId,
+                menuId: data.removeList[--len].menuId
+            });
         }
         len = data.removeFileList.length;
         while (len) {
-            await this.app.mysql.delete('note', {userId: userInfo.userId, noteId: data.removeFileList[--len].noteId});
+            await this.app.mysql.delete('note', {
+                userId: userInfo.userId,
+                noteId: data.removeFileList[--len].noteId
+            });
         }
-        return await this.app.mysql.select('menu', {where: {userId: userInfo.userId}});
+        return await this.app.mysql.select('menu', {
+            where: {
+                userId: userInfo.userId
+            }
+        });
     }
 }
 
